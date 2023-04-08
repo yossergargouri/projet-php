@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+
+<div id="calendar"></div>
+<div id="event-list"></div>
+<script>
+  // Define your events data here
+const eventsData = {
+  "2023-04-06": ["Event 1", "Event 2"],
+  "2023-04-10": ["Event 3"],
+  "2023-04-20": ["Event 4", "Event 5"],
+};
+
+// Define your calendar rendering function
+function renderCalendar() {
+  const calendarEl = document.getElementById("calendar");
+  const today = new Date();
+  let calendarHTML = '<table>';}
+
+  // Render calendar header
+  calendarHTML += '<tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>';
+
+  // Render calendar rows
+  let date = new Date(today.getFullYear(), today.getMonth(), 1);
+  while (date.getMonth() === today.getMonth()) {
+    calendarHTML += '<tr>';
+    for (let i = 0; i < 7; i++) {
+      const dateString = date.toISOString().slice(0, 10);
+      const events = eventsData[dateString] || [];
+      calendarHTML += <td class="calendar-day" data-date="${dateString}"> ${date.getDate()}
+        
+        ${events.length > 0 ? '<span class="event-count">' + events.length + '</span>' : ""}</td>;
+      date.setDate(date.getDate() + 1);
+    
+    calendarHTML += '</tr>';
+  }
+  calendarHTML += '</table>';
+  calendarEl.innerHTML = calendarHTML;
+
+  // Add click event listener to each day
+  const days = document.querySelectorAll('.calendar-day');
+  days.forEach(day => {
+    day.addEventListener('click', event => {
+      const selectedDate = event.target.getAttribute('data-date');
+      const events = eventsData[selectedDate] || [];
+      const eventListEl = document.getElementById('event-list');
+      let eventListHTML = '';
+      if (events.length > 0) {
+        eventListHTML += '<ul>';
+        events.forEach(event => {
+          eventListHTML += <li>${event}</li>;
+        });
+        eventListHTML += '</ul>';
+      } else {
+        eventListHTML = 'No events found for selected date.';
+      }
+      eventListEl.innerHTML = eventListHTML;
+    });
+  });
+}
+
+// Call the calendar rendering function
+renderCalendar();
+</script>
+</body>
+</html>
